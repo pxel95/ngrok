@@ -1,0 +1,1 @@
+ngrok -config=ngrok.cfg 9999
