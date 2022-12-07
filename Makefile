@@ -1,18 +1,11 @@
 .PHONY: default server client deps fmt clean all release-all assets client-assets server-assets contributors
-SHELL=cmd.exe
+export GOPATH:=$(shell pwd)
 
 BUILDTAGS=debug
-
-GOPATH=D:/projects/ngrok
-GOOS=windows 
-GOARCH=amd64
-
-
-
 default: all
-
+	go version
 deps: assets
-	go get -tags '$(BUILDTAGS)' -d -v ./src/ngrok/...
+	go get -tags '$(BUILDTAGS)' -d -v ngrok/...
 
 server: deps
 	go install -tags '$(BUILDTAGS)' ngrok/main/ngrokd
@@ -26,7 +19,7 @@ client: deps
 assets: client-assets server-assets
 
 bin/go-bindata:
-	 go get github.com/jteeuwen/go-bindata/go-bindata
+	GOOS="" GOARCH="" go get github.com/jteeuwen/go-bindata/go-bindata
 
 client-assets: bin/go-bindata
 	bin/go-bindata -nomemcopy -pkg=assets -tags=$(BUILDTAGS) \
